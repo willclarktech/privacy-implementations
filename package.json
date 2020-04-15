@@ -1,0 +1,22 @@
+{
+	"name": "privacy-implementations",
+	"version": "0.0.0",
+	"description": "Implementations of privacy-focused protocols and accompanying blog posts",
+	"private": true,
+	"author": "willclarktech <willclarktech@users.noreply.github.com>",
+	"license": "Apache-2.0",
+	"homepage": "https://github.com/willclarktech/privacy-implementations#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/willclarktech/privacy-implementations.git"
+	},
+	"bugs": {
+		"url": "https://github.com/willclarktech/privacy-implementations/issues"
+	},
+	"keywords": [
+		"privacy"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
+}
