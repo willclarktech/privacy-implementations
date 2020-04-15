@@ -17,6 +17,9 @@
 		"privacy"
 	],
 	"scripts": {
+		"format": "prettier --write .",
+		"lint": "eslint './src/**/*.{js,json,ts}'",
+		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
