@@ -47,9 +47,6 @@ export class Server {
 	): bigint {
 		const intersectionSize = this.revealIntersectionSize(publicKey, values);
 		const r = randBetween(publicKey.n);
-		return add(publicKey)(
-			intersectionSize,
-			multiply(publicKey)(intersectionSize, r),
-		);
+		return multiply(publicKey)(intersectionSize, r);
 	}
 }
