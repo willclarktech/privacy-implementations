@@ -15,16 +15,17 @@ export class Bob {
 		this.b = randBetween(keySpace);
 	}
 
-	public storeSharedSecret(A: bigint): void {
+	public raise(g: bigint): bigint {
 		const { b, p } = this;
-		// this.s = A ** b % p
-		this.s = modPow(A, b, p);
+		return modPow(g, b, p);
+	}
+
+	public storeSharedSecret(A: bigint): void {
+		this.s = this.raise(A);
 	}
 
 	public get B(): bigint {
-		const { b, g, p } = this;
-		// return g ** b % p
-		return modPow(g, b, p);
+		return this.raise(this.g);
 	}
 
 	public get sharedSecret(): null | bigint {
