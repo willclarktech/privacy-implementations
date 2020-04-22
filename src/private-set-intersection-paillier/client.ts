@@ -25,6 +25,14 @@ export class Client {
 		return this.keys.pub;
 	}
 
+	public addElement(element: number): void {
+		this.set.add(element);
+	}
+
+	public removeElement(element: number): void {
+		this.set.delete(element);
+	}
+
 	public getEncryptedValues(): readonly bigint[] {
 		return Client.set2HotArray(this.domainSize, this.set).map(this.encrypt);
 	}

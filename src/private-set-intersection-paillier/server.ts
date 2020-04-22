@@ -10,6 +10,14 @@ export class Server {
 		this.set = initialSet;
 	}
 
+	public addElement(element: number): void {
+		this.set.add(element);
+	}
+
+	public removeElement(element: number): void {
+		this.set.delete(element);
+	}
+
 	public revealIntersection(
 		publicKey: PublicKey,
 		values: readonly bigint[],
