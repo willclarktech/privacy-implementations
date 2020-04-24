@@ -1,9 +1,35 @@
+import { randomBytes } from "crypto";
+
 import { bigInt2Buffer, buffer2BigInt } from "../utils";
 import { BloomFilter } from "./";
+
+const bruteForce = (
+	bloomFilter: BloomFilter,
+	domainByteSize: number,
+	deadline: number,
+): readonly Buffer[] => {
+	const foundEntries = [];
+	for (
+		let candidate = 0n;
+		candidate < (2 ** 8) ** domainByteSize;
+		++candidate
+	) {
+		const element = bigInt2Buffer(candidate);
+		if (bloomFilter.has(element)) {
+			foundEntries.push(element);
+		}
+		if (Date.now() > deadline) {
+			throw new Error("Brute force ran out of time");
+		}
+	}
+	return foundEntries;
+};
 
 describe("Bloom filter", () => {
 	const capacity = 100;
 	const falsePositiveRate = 0.001;
+	const feasibleTime = 20_000;
+	const acceptableBruteForceRatio = 10;
 
 	it("can add elements up to its capacity", () => {
 		const bloomFilter = new BloomFilter(capacity, falsePositiveRate);
@@ -84,5 +110,43 @@ describe("Bloom filter", () => {
 
 		const expectedMax = Math.ceil(numTestElements * falsePositiveRate);
 		expect(falsePositives.length).toBeLessThanOrEqual(expectedMax);
+	});
+
+	it("leaks entries for small domains", () => {
+		const bloomFilter = new BloomFilter(capacity, falsePositiveRate);
+		const numElements = 33;
+		const domainByteSize = 2;
+		const elements = Array.from({ length: numElements }, () =>
+			Buffer.concat([
+				Buffer.alloc(8 - domainByteSize, 0),
+				randomBytes(domainByteSize),
+			]),
+		);
+
+		elements.forEach(bloomFilter.add.bind(bloomFilter));
+
+		const deadline = Date.now() + feasibleTime;
+		const results = bruteForce(bloomFilter, domainByteSize, deadline);
+
+		elements.forEach((element) => expect(results).toContainEqual(element));
+		expect(results.length).toBeLessThanOrEqual(
+			elements.length * acceptableBruteForceRatio,
+		);
+	});
+
+	it("cannot be brute forced for large domains", () => {
+		const bloomFilter = new BloomFilter(capacity, falsePositiveRate);
+		const numElements = 33;
+		const domainByteSize = 8;
+		const elements = Array.from({ length: numElements }, () =>
+			randomBytes(domainByteSize),
+		);
+
+		elements.forEach(bloomFilter.add.bind(bloomFilter));
+
+		const deadline = Date.now() + feasibleTime;
+		expect(
+			bruteForce.bind(null, bloomFilter, domainByteSize, deadline),
+		).toThrowError(/brute force ran out of time/i);
 	});
 });
