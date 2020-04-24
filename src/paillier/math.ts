@@ -1,8 +1,5 @@
 import { modInv, modPow } from "bigint-crypto-utils";
 
-export const getBitLength = (a: bigint): number =>
-	[0n, 1n].includes(a) ? 1 : 1 + getBitLength(a >> 1n);
-
 export const greatestCommonDivisor = (a: bigint, b: bigint): bigint =>
 	b === 0n ? a : greatestCommonDivisor(b, a % b);
 

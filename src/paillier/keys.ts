@@ -1,6 +1,7 @@
 import { modPow, primeSync, randBetween } from "bigint-crypto-utils";
 
-import { calculateLambda, calculateMu, getBitLength } from "./math";
+import { getBitLength } from "../utils";
+import { calculateLambda, calculateMu } from "./math";
 
 export type PublicKey = {
 	readonly n: bigint;
