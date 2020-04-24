@@ -1,5 +1,7 @@
 import { createHash } from "crypto";
 
+import { BitArray } from "../utils";
+
 export class BloomFilter {
 	private static HASH_ALGORITHM = "sha256";
 	private static NONCES: readonly [number, number] = [1, 2];
@@ -9,7 +11,7 @@ export class BloomFilter {
 
 	private readonly numHashFunctions: number;
 	private readonly bitLength: number;
-	private readonly bitArray: boolean[];
+	private readonly bitArray: BitArray;
 	private count: number;
 
 	constructor(capacity: number, falsePositiveRate: number) {
@@ -18,7 +20,7 @@ export class BloomFilter {
 
 		this.numHashFunctions = BloomFilter.getNumHashFunctions(falsePositiveRate);
 		this.bitLength = BloomFilter.getBitLength(capacity, falsePositiveRate);
-		this.bitArray = Array.from({ length: this.bitLength }, () => false);
+		this.bitArray = new BitArray(this.bitLength);
 		this.count = 0;
 	}
 
@@ -32,7 +34,7 @@ export class BloomFilter {
 		}
 		const hashes = this.getHashes(element);
 		hashes.forEach((i: number) => {
-			this.bitArray[i] = true;
+			this.bitArray.set(i);
 		});
 		++this.count;
 	}
@@ -40,7 +42,7 @@ export class BloomFilter {
 	public has(element: Buffer): boolean {
 		const hashes = this.getHashes(element);
 		for (const i of hashes) {
-			if (!this.bitArray[i]) {
+			if (!this.bitArray.has(i)) {
 				return false;
 			}
 		}
