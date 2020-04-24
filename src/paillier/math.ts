@@ -1,13 +1,7 @@
-import { modInv, modPow } from "bigint-crypto-utils";
-
-export const greatestCommonDivisor = (a: bigint, b: bigint): bigint =>
-	b === 0n ? a : greatestCommonDivisor(b, a % b);
-
-export const lowestCommonMultiple = (a: bigint, b: bigint): bigint =>
-	(a * b) / greatestCommonDivisor(a, b);
+import { lcm, modInv, modPow } from "bigint-crypto-utils";
 
 export const calculateLambda = (p: bigint, q: bigint): bigint =>
-	lowestCommonMultiple(p - 1n, q - 1n);
+	lcm(p - 1n, q - 1n);
 
 export const createL = (n: bigint) => (x: bigint): bigint => (x - 1n) / n;
 
