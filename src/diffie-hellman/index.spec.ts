@@ -1,42 +1,42 @@
 import { modPow } from "bigint-crypto-utils";
 
-import { Alice, Bob } from "./";
+import { Party } from "./";
 
 describe("Diffie-Hellman", () => {
+	const maxAttackPeriod = 20_000;
+
 	it("successfully completes key exchange", () => {
-		const alice = new Alice();
-		const bob = new Bob(alice.p, alice.g);
+		const alice = new Party();
+		const { g, p } = alice;
+		const bob = new Party({ p, g });
 
-		alice.storeSharedSecret(bob.B);
-		bob.storeSharedSecret(alice.A);
+		const aliceSharedSecret = alice.raise(bob.intermediateValue);
+		const bobSharedSecret = bob.raise(alice.intermediateValue);
 
-		expect(bob.sharedSecret).toStrictEqual(alice.sharedSecret);
-		expect(alice.sharedSecret).not.toBeNull();
-		expect(alice.sharedSecret).not.toBeNaN();
-		expect(alice.sharedSecret).toBeGreaterThanOrEqual(1);
-		expect((alice.sharedSecret as bigint) - (alice.p - 1n)).toBeLessThanOrEqual(
+		expect(bobSharedSecret).toStrictEqual(aliceSharedSecret);
+		expect(aliceSharedSecret).not.toBeNull();
+		expect(aliceSharedSecret).not.toBeNaN();
+		expect(aliceSharedSecret).toBeGreaterThanOrEqual(1);
+		expect((aliceSharedSecret as bigint) - (alice.p - 1n)).toBeLessThanOrEqual(
 			0,
 		);
 	});
 
 	it("can be broken efficiently with small key sizes", () => {
 		const bitLength = 16n;
-		const alice = new Alice(bitLength);
-		const bob = new Bob(alice.p, alice.g);
+		const alice = new Party({ bitLength });
+		const { g, p } = alice;
+		const bob = new Party({ p, g });
 
-		alice.storeSharedSecret(bob.B);
-		bob.storeSharedSecret(alice.A);
-
-		const maxAttackPeriod = 20_000;
-		const startTime = Date.now();
+		const aliceSharedSecret = alice.raise(bob.intermediateValue);
 
 		let a = 1n;
-		const { A, g, p } = alice;
-
 		let found = false;
+		const startTime = Date.now();
+
 		while (!found && Date.now() - startTime < maxAttackPeriod) {
 			++a;
-			if (modPow(g, a, p) === A) {
+			if (modPow(g, a, p) === alice.intermediateValue) {
 				found = true;
 				break;
 			}
@@ -44,28 +44,22 @@ describe("Diffie-Hellman", () => {
 
 		expect(found).toStrictEqual(true);
 
-		const secret = modPow(bob.B, a, p);
-		expect(secret).toStrictEqual(alice.sharedSecret);
+		const sharedSecret = modPow(bob.intermediateValue, a, p);
+		expect(sharedSecret).toStrictEqual(aliceSharedSecret);
 	});
 
 	it("cannot be broken efficiently with large key sizes", () => {
 		const bitLength = 32n;
-		const alice = new Alice(bitLength);
-		const bob = new Bob(alice.p, alice.g);
-
-		alice.storeSharedSecret(bob.B);
-		bob.storeSharedSecret(alice.A);
-
-		const maxAttackPeriod = 20_000;
-		const startTime = Date.now();
-
-		const { A, g, p } = alice;
+		const alice = new Party({ bitLength });
+		const { g, p } = alice;
 
 		let a = 1n;
 		let found = false;
+		const startTime = Date.now();
+
 		while (!found && Date.now() - startTime < maxAttackPeriod) {
 			++a;
-			if (modPow(g, a, p) === A) {
+			if (modPow(g, a, p) === alice.intermediateValue) {
 				found = true;
 				break;
 			}
