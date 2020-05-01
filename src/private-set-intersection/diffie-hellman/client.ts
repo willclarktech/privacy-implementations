@@ -57,7 +57,7 @@ export class Client extends Shared {
 		return clientEncryptedValues.reduce(
 			(intersection: readonly number[], encryptedValue, i) => {
 				const decryptedValue = bigInt2Buffer(
-					this.party.raiseInverse(encryptedValue),
+					this.party.raise(/* Inverse */ encryptedValue),
 				);
 				return filter.has(decryptedValue)
 					? [...intersection, clientValues[i]]
