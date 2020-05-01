@@ -73,7 +73,7 @@ describe("Private set intersection based on Diffie-Hellman", () => {
 		});
 	});
 
-	describe.only("with filter", () => {
+	describe("with filter", () => {
 		it.each([
 			[new Set([]), []],
 			[new Set([1]), [1]],
