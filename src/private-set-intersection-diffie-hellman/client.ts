@@ -1,5 +1,7 @@
-import { IntersectionResponse } from "./server";
+import { IntersectionResponse, IntersectionFilterResponse } from "./server";
 import { Shared, SharedOptions } from "./shared";
+import { bigInt2Buffer } from "src/utils";
+import { modPow } from "bigint-crypto-utils";
 
 export type ClientOptions = SharedOptions & {
 	readonly p: bigint;
@@ -43,5 +45,32 @@ export class Client extends Shared {
 				serverEncryptedValues.has(encryptedValue) ? count + 1 : count,
 			0,
 		);
+	}
+
+	public handleIntersectionFilterResponse({
+		clientEncryptedValues,
+		filter,
+	}: IntersectionFilterResponse): readonly number[] {
+		// NOTE: Converting the set to an array like this must be a
+		// deterministic operation on the same set used to generate the
+		// client’s intermediate values originally sent to the server
+		const clientValues = [...this.set.values()];
+		return clientEncryptedValues.reduce(
+			(intersection: readonly number[], encryptedValue, i) => {
+				const decryptedValue = bigInt2Buffer(
+					this.party.raiseInverse(encryptedValue),
+				);
+				return filter.has(decryptedValue)
+					? [...intersection, clientValues[i]]
+					: intersection;
+			},
+			[],
+		);
+	}
+
+	public handleIntersectionSizeFilterResponse({
+		clientEncryptedValues,
+	}: IntersectionFilterResponse): number {
+		throw new Error("woof");
 	}
 }
