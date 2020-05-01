@@ -15,6 +15,10 @@ export class BloomFilter {
 	private count: number;
 
 	constructor(capacity: number, falsePositiveRate: number) {
+		if (falsePositiveRate <= 0 || falsePositiveRate >= 1) {
+			throw new Error("False positive rate must be between 0 and 1");
+		}
+
 		this.capacity = capacity;
 		this.falsePositiveRate = falsePositiveRate;
 
@@ -47,6 +51,18 @@ export class BloomFilter {
 			}
 		}
 		return true;
+	}
+
+	public static from(
+		iterable: Iterable<Buffer>,
+		capacity: number,
+		falsePositiveRate: number,
+	): BloomFilter {
+		const bloomFilter = new BloomFilter(capacity, falsePositiveRate);
+		for (const element of iterable) {
+			bloomFilter.add(element);
+		}
+		return bloomFilter;
 	}
 
 	private getHash(element: Buffer, nonce: number): number {

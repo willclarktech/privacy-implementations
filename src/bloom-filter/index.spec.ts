@@ -31,6 +31,20 @@ describe("Bloom filter", () => {
 	const feasibleTime = 20_000;
 	const acceptableBruteForceRatio = 10;
 
+	it("creates a filter from a pre-existing set", () => {
+		const numElements = 5;
+		const set = new Set(
+			Array.from({ length: numElements }, (_, i) => Buffer.from([i])),
+		);
+
+		const bloomFilter = BloomFilter.from(set, capacity, falsePositiveRate);
+
+		expect(bloomFilter.length).toStrictEqual(numElements);
+		expect([...set].every(bloomFilter.has.bind(bloomFilter))).toStrictEqual(
+			true,
+		);
+	});
+
 	it("can add elements up to its capacity", () => {
 		const bloomFilter = new BloomFilter(capacity, falsePositiveRate);
 		const elements = Array.from({ length: capacity }, (_, i: number) =>
