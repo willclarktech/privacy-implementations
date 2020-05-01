@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 
-import { BitArray } from "../utils";
+import { BitArray } from "../../utils";
 
 export class BloomFilter {
 	private static HASH_ALGORITHM = "sha256";

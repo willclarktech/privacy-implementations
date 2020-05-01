@@ -1,5 +1,5 @@
-import { BloomFilter } from "../bloom-filter";
-import { bigInt2Buffer } from "../utils";
+import { BloomFilter } from "../../data-structure/bloom-filter";
+import { bigInt2Buffer } from "../../utils";
 import { Shared, SharedOptions } from "./shared";
 
 export type ServerOptions = SharedOptions & {

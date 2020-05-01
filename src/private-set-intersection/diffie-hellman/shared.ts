@@ -1,4 +1,4 @@
-import { Party } from "../diffie-hellman";
+import { Party } from "../../key-exchange/diffie-hellman";
 import { hashNumber, isGenerator, phi } from "./utils";
 
 export type SharedOptions = {

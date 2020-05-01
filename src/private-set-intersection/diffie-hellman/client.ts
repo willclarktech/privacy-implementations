@@ -1,7 +1,6 @@
-import { IntersectionResponse, IntersectionFilterResponse } from "./server";
+import { bigInt2Buffer } from "../../utils";
+import { IntersectionFilterResponse, IntersectionResponse } from "./server";
 import { Shared, SharedOptions } from "./shared";
-import { bigInt2Buffer } from "src/utils";
-import { modPow } from "bigint-crypto-utils";
 
 export type ClientOptions = SharedOptions & {
 	readonly p: bigint;
