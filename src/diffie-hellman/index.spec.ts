@@ -23,7 +23,7 @@ describe("Diffie-Hellman", () => {
 	});
 
 	it("can be broken efficiently with small key sizes", () => {
-		const bitLength = 16n;
+		const bitLength = 16;
 		const alice = new Party({ bitLength });
 		const { g, p } = alice;
 		const bob = new Party({ p, g });
@@ -49,7 +49,7 @@ describe("Diffie-Hellman", () => {
 	});
 
 	it("cannot be broken efficiently with large key sizes", () => {
-		const bitLength = 32n;
+		const bitLength = 32;
 		const alice = new Party({ bitLength });
 		const { g, p } = alice;
 

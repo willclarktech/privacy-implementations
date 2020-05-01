@@ -5,7 +5,7 @@ import { DEFAULT_BIT_LENGTH } from "./constants";
 export type PartyOptions = {
 	readonly p?: bigint;
 	readonly g?: bigint;
-	readonly bitLength?: bigint;
+	readonly bitLength?: number;
 };
 
 export class Party {
@@ -14,7 +14,7 @@ export class Party {
 	private readonly secret: bigint;
 
 	constructor({ p, g, bitLength = DEFAULT_BIT_LENGTH }: PartyOptions = {}) {
-		const keySpace = 2n ** bitLength;
+		const keySpace = 2n ** BigInt(bitLength);
 		this.p = p === undefined ? Party.getP(keySpace) : p;
 		this.g = g === undefined ? randBetween(this.p - 1n, 2n) : g;
 		this.secret = randBetween(keySpace);
