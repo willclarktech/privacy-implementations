@@ -47,8 +47,8 @@ export class Client {
 		);
 	}
 
-	public handleIntersectionSizeResponse(response: bigint): bigint {
-		return this.decrypt(response);
+	public handleIntersectionSizeResponse(response: bigint): number {
+		return Number(this.decrypt(response));
 	}
 
 	public handleIntersectionNonEmptyResponse(response: bigint): boolean {

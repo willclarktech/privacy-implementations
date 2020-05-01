@@ -24,12 +24,12 @@ describe("Private set intersection based on Paillier", () => {
 	});
 
 	it.each([
-		[new Set([]), 0n],
-		[new Set([1]), 1n],
-		[new Set([1, 6]), 1n],
-		[new Set([6, 7]), 0n],
-		[new Set([1, 2, 3, 4, 5]), 5n],
-		[new Set([1, 2, 3, 4, 5, 6]), 5n],
+		[new Set([]), 0],
+		[new Set([1]), 1],
+		[new Set([1, 6]), 1],
+		[new Set([6, 7]), 0],
+		[new Set([1, 2, 3, 4, 5]), 5],
+		[new Set([1, 2, 3, 4, 5, 6]), 5],
 	])("reveals the size of the intersection", (clientSet, expected) => {
 		const serverSet = new Set([1, 2, 3, 4, 5]);
 		const server = new Server(serverSet);
