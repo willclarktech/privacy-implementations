@@ -1,11 +1,7 @@
 import { strict as assert } from "assert";
 import { randBetween } from "bigint-crypto-utils";
 
-import {
-	add,
-	multiply,
-	PublicKey,
-} from "../../homomorphic-encryption/paillier";
+import { add, multiply, PublicKey } from "../../cryptosystem/paillier";
 
 export class Server {
 	private readonly set: Set<number>;

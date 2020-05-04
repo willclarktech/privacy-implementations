@@ -4,7 +4,7 @@ import {
 	generateKeysSync,
 	KeyPair,
 	PublicKey,
-} from "../../homomorphic-encryption/paillier";
+} from "../../cryptosystem/paillier";
 
 export class Client {
 	private readonly domainSize: number;
