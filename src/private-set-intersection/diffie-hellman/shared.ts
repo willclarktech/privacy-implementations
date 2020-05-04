@@ -1,5 +1,5 @@
 import { Party } from "../../cryptosystem/diffie-hellman";
-import { hashNumber, isGenerator, phi } from "./utils";
+import { hashNumber, isGenerator, phi } from "./util";
 
 export type SharedOptions = {
 	readonly p?: bigint;

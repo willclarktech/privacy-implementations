@@ -1,4 +1,4 @@
-import { bigInt2Buffer } from "../../utils";
+import { bigInt2Buffer } from "../../util";
 import { IntersectionFilterResponse, IntersectionResponse } from "./server";
 import { Shared, SharedOptions } from "./shared";
 

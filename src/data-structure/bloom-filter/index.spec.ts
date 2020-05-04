@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 
-import { bigInt2Buffer, buffer2BigInt } from "../../utils";
+import { bigInt2Buffer, buffer2BigInt } from "../../util";
 import { BloomFilter } from "./";
 
 const bruteForce = (
