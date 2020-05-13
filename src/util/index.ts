@@ -20,14 +20,11 @@ export const array2BigInt = (a: readonly number[]): bigint =>
 	buffer2BigInt(Buffer.from(a));
 
 export const hashNumber = (algorithm: string, n: bigint): bigint => {
-	const buffer = Buffer.alloc(8);
-	buffer.writeBigUInt64BE(n);
-
 	const hash = createHash(algorithm);
+	const buffer = bigInt2Buffer(n);
 	hash.update(buffer);
 	const hashOutput = hash.digest();
-
-	return hashOutput.readBigUInt64BE();
+	return buffer2BigInt(hashOutput);
 };
 
 export const phi = (n: bigint): bigint => {
