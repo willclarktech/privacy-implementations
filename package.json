@@ -39,6 +39,8 @@
 		"typescript": "^3.8.3"
 	},
 	"dependencies": {
-		"bigint-crypto-utils": "^3.0.1"
+		"@types/elliptic": "^6.4.12",
+		"bigint-crypto-utils": "^3.0.1",
+		"elliptic": "^6.5.2"
 	}
 }
