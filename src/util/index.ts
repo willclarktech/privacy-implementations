@@ -7,8 +7,10 @@ export const getBitLength = (a: bigint): number =>
 export const getByteLength = (a: bigint): number =>
 	Math.ceil(getBitLength(a) / 8);
 
-export const bigInt2Buffer = (a: bigint): Buffer =>
-	Buffer.from(a.toString(16), "hex");
+export const bigInt2Buffer = (a: bigint): Buffer => {
+	const hex = a.toString(16);
+	return Buffer.from(hex.length % 2 ? `0${hex}` : hex, "hex");
+};
 
 export const bigInt2Array = (a: bigint): readonly number[] =>
 	Array.from(bigInt2Buffer(a));
