@@ -9,17 +9,16 @@ export type PartyOptions = {};
 export class Party {
 	private readonly ec: EllipticCurve;
 	private readonly curve: curve.short;
-	private readonly keyPair: EllipticCurve.KeyPair;
+	private readonly privateKey: BN;
 	private readonly privateKeyInverse: BN;
 
 	constructor(_options: PartyOptions = {}) {
 		this.ec = new EllipticCurve("p256");
 		this.curve = this.ec.curve as curve.short;
-		this.keyPair = this.ec.genKeyPair();
+		const keyPair = this.ec.genKeyPair();
+		this.privateKey = keyPair.getPrivate();
 		this.privateKeyInverse = new BN(
-			bigInt2Buffer(
-				modInv(BigInt(this.keyPair.getPrivate()), BigInt(this.curve.n)),
-			),
+			bigInt2Buffer(modInv(BigInt(this.privateKey), BigInt(this.curve.n))),
 		);
 	}
 
@@ -27,7 +26,7 @@ export class Party {
 		const point = shouldHash
 			? this.hashToPoint(bigInt2Array(g))
 			: this.curve.pointFromX(bigInt2Array(g));
-		const multiplicationPoint = point.mul(this.keyPair.getPrivate());
+		const multiplicationPoint = point.mul(this.privateKey);
 		return BigInt(multiplicationPoint.getX());
 	}
 
