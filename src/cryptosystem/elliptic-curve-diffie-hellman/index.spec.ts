@@ -14,7 +14,7 @@ describe("Elliptic Curve Diffie-Hellman", () => {
 		expect(aliceSharedSecret).toBeGreaterThanOrEqual(1);
 	});
 
-	it("successfully inverts a raise", () => {
+	it("successfully inverts a reraise", () => {
 		const alice = new Party();
 		const bob = new Party();
 
