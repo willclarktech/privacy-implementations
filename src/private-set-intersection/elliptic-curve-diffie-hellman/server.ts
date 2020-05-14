@@ -57,6 +57,7 @@ export class Server extends Shared {
 
 	public revealIntersectionFilter(
 		clientIntermediateValues: readonly bigint[],
+		falsePositiveRate = this.falsePositiveRate,
 	): IntersectionFilterResponse {
 		const {
 			clientEncryptedValues,
@@ -65,7 +66,7 @@ export class Server extends Shared {
 		const filter = BloomFilter.from(
 			serverIntermediateValues.map(bigInt2Buffer),
 			serverIntermediateValues.length,
-			this.falsePositiveRate,
+			falsePositiveRate / clientEncryptedValues.length,
 		);
 		return {
 			clientEncryptedValues,
@@ -75,6 +76,7 @@ export class Server extends Shared {
 
 	public revealIntersectionSizeFilter(
 		clientIntermediateValues: readonly bigint[],
+		falsePositiveRate = this.falsePositiveRate,
 	): IntersectionFilterResponse {
 		const {
 			clientEncryptedValues,
@@ -83,7 +85,7 @@ export class Server extends Shared {
 		const filter = BloomFilter.from(
 			serverIntermediateValues.map(bigInt2Buffer),
 			serverIntermediateValues.length,
-			this.falsePositiveRate,
+			falsePositiveRate / clientEncryptedValues.length,
 		);
 		return {
 			clientEncryptedValues,
