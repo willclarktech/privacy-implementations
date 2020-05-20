@@ -122,8 +122,8 @@ describe("Private set intersection based on Elliptic Curve Diffie-Hellman", () =
 			const clientIntermediateValues = clients.map((client) =>
 				client.prepareIntermediateSortedValues(),
 			);
-			const responses = clientIntermediateValues.map(
-				server.revealIntersectionSizeFilter.bind(server),
+			const responses = clientIntermediateValues.map((values) =>
+				server.revealIntersectionSizeFilter(values),
 			);
 			const reconstructedServerSet = responses.reduce((set, response, i) => {
 				const included = clients[i].handleIntersectionSizeFilterResponse(
