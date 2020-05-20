@@ -63,14 +63,13 @@ export class Server extends Shared {
 			clientEncryptedValues,
 			serverIntermediateValues,
 		} = this.revealIntersection(clientIntermediateValues);
-		const filter = BloomFilter.from(
-			serverIntermediateValues.map(bigInt2Buffer),
-			serverIntermediateValues.length,
-			falsePositiveRate / clientEncryptedValues.length,
-		);
 		return {
 			clientEncryptedValues,
-			filter,
+			filter: Server.createBloomFilter(
+				serverIntermediateValues,
+				falsePositiveRate,
+				clientEncryptedValues.length,
+			),
 		};
 	}
 
@@ -82,14 +81,13 @@ export class Server extends Shared {
 			clientEncryptedValues,
 			serverIntermediateValues,
 		} = this.revealIntersectionSize(clientIntermediateValues);
-		const filter = BloomFilter.from(
-			serverIntermediateValues.map(bigInt2Buffer),
-			serverIntermediateValues.length,
-			falsePositiveRate / clientEncryptedValues.length,
-		);
 		return {
 			clientEncryptedValues,
-			filter,
+			filter: Server.createBloomFilter(
+				serverIntermediateValues,
+				falsePositiveRate,
+				clientEncryptedValues.length,
+			),
 		};
 	}
 
@@ -97,5 +95,19 @@ export class Server extends Shared {
 		clientIntermediateValues: readonly bigint[],
 	): readonly bigint[] {
 		return clientIntermediateValues.map((value) => this.party.raise(value));
+	}
+
+	private static createBloomFilter(
+		values: readonly bigint[],
+		falsePositiveRate: number,
+		numQueries: number,
+	): BloomFilter {
+		const adjustedFalsePositiveRate =
+			numQueries === 0 ? falsePositiveRate : falsePositiveRate / numQueries;
+		return BloomFilter.from(
+			values.map((value) => bigInt2Buffer(value)),
+			values.length,
+			adjustedFalsePositiveRate,
+		);
 	}
 }
