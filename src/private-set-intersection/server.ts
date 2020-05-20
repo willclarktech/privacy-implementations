@@ -97,7 +97,7 @@ export class Server extends Shared {
 		return clientIntermediateValues.map((value) => this.party.raise(value));
 	}
 
-	private static createBloomFilter(
+	public static createBloomFilter(
 		values: readonly bigint[],
 		falsePositiveRate: number,
 		numQueries: number,
