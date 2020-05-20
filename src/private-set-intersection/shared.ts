@@ -1,4 +1,4 @@
-import { Party } from "../../cryptosystem/elliptic-curve-diffie-hellman";
+import { Party } from "../elliptic-curve-diffie-hellman";
 
 export class Shared {
 	protected readonly party: Party;

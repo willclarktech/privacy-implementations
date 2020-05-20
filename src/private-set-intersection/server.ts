@@ -1,8 +1,8 @@
-import { BloomFilter } from "../../data-structure/bloom-filter";
-import { bigInt2Buffer } from "../../util";
-import { Shared, SharedOptions } from "./shared";
+import { BloomFilter } from "../data-structure/bloom-filter";
+import { bigInt2Buffer } from "../util";
+import { Shared } from "./shared";
 
-export type ServerOptions = SharedOptions & {
+export type ServerOptions = {
 	readonly falsePositiveRate?: number;
 };
 
@@ -23,10 +23,10 @@ const defaultOptions = {
 export class Server extends Shared {
 	private readonly falsePositiveRate: number;
 
-	constructor(initialSet: Set<number>, options: ServerOptions) {
-		const combinedOptions = { ...defaultOptions, ...options };
-		super(initialSet, combinedOptions);
-		this.falsePositiveRate = combinedOptions.falsePositiveRate;
+	constructor(initialSet: Set<bigint>, options: ServerOptions = {}) {
+		const { falsePositiveRate } = { ...defaultOptions, ...options };
+		super(initialSet);
+		this.falsePositiveRate = falsePositiveRate;
 	}
 
 	public revealIntersection(
@@ -57,43 +57,57 @@ export class Server extends Shared {
 
 	public revealIntersectionFilter(
 		clientIntermediateValues: readonly bigint[],
+		falsePositiveRate = this.falsePositiveRate,
 	): IntersectionFilterResponse {
 		const {
 			clientEncryptedValues,
 			serverIntermediateValues,
 		} = this.revealIntersection(clientIntermediateValues);
-		const filter = BloomFilter.from(
-			serverIntermediateValues.map(bigInt2Buffer),
-			serverIntermediateValues.length,
-			this.falsePositiveRate,
-		);
 		return {
 			clientEncryptedValues,
-			filter,
+			filter: Server.createBloomFilter(
+				serverIntermediateValues,
+				falsePositiveRate,
+				clientEncryptedValues.length,
+			),
 		};
 	}
 
 	public revealIntersectionSizeFilter(
 		clientIntermediateValues: readonly bigint[],
+		falsePositiveRate = this.falsePositiveRate,
 	): IntersectionFilterResponse {
 		const {
 			clientEncryptedValues,
 			serverIntermediateValues,
 		} = this.revealIntersectionSize(clientIntermediateValues);
-		const filter = BloomFilter.from(
-			serverIntermediateValues.map(bigInt2Buffer),
-			serverIntermediateValues.length,
-			this.falsePositiveRate,
-		);
 		return {
 			clientEncryptedValues,
-			filter,
+			filter: Server.createBloomFilter(
+				serverIntermediateValues,
+				falsePositiveRate,
+				clientEncryptedValues.length,
+			),
 		};
 	}
 
 	private handleClientIntermediateValues(
 		clientIntermediateValues: readonly bigint[],
 	): readonly bigint[] {
-		return clientIntermediateValues.map(this.party.raise.bind(this.party));
+		return clientIntermediateValues.map((value) => this.party.raise(value));
+	}
+
+	private static createBloomFilter(
+		values: readonly bigint[],
+		falsePositiveRate: number,
+		numQueries: number,
+	): BloomFilter {
+		const adjustedFalsePositiveRate =
+			numQueries === 0 ? falsePositiveRate : falsePositiveRate / numQueries;
+		return BloomFilter.from(
+			values.map((value) => bigInt2Buffer(value)),
+			values.length,
+			adjustedFalsePositiveRate,
+		);
 	}
 }

@@ -2,7 +2,7 @@ import { modInv } from "bigint-crypto-utils";
 import BN from "bn.js";
 import { curve, ec as EllipticCurve } from "elliptic";
 
-import { array2BigInt, bigInt2Array, bigInt2Buffer } from "../../util";
+import { array2BigInt, bigInt2Array, bigInt2Buffer } from "../util";
 
 export type PartyOptions = {};
 
