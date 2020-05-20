@@ -14,7 +14,7 @@ const bruteForce = (
 		candidate < (2 ** 8) ** domainByteSize;
 		++candidate
 	) {
-		const element = bigInt2Buffer(candidate);
+		const element = bigInt2Buffer(candidate, domainByteSize);
 		if (bloomFilter.has(element)) {
 			foundEntries.push(element);
 		}
@@ -131,10 +131,7 @@ describe("Bloom filter", () => {
 		const numElements = 33;
 		const domainByteSize = 2;
 		const elements = Array.from({ length: numElements }, () =>
-			Buffer.concat([
-				Buffer.alloc(8 - domainByteSize, 0),
-				randomBytes(domainByteSize),
-			]),
+			randomBytes(domainByteSize),
 		);
 
 		elements.forEach(bloomFilter.add.bind(bloomFilter));
