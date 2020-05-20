@@ -7,9 +7,17 @@ export const getBitLength = (a: bigint): number =>
 export const getByteLength = (a: bigint): number =>
 	Math.ceil(getBitLength(a) / 8);
 
-export const bigInt2Buffer = (a: bigint): Buffer => {
+export const bigInt2Buffer = (a: bigint, numBytes?: number): Buffer => {
 	const hex = a.toString(16);
-	return Buffer.from(hex.length % 2 ? `0${hex}` : hex, "hex");
+	const buffer = Buffer.from(hex.length % 2 ? `0${hex}` : hex, "hex");
+	if (numBytes !== undefined) {
+		const byteLength = buffer.length;
+		if (numBytes < byteLength) {
+			throw new Error("numBytes not large enough");
+		}
+		return Buffer.concat([Buffer.alloc(numBytes - byteLength, 0), buffer]);
+	}
+	return buffer;
 };
 
 export const bigInt2Array = (a: bigint): readonly number[] =>
