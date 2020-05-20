@@ -16,6 +16,10 @@
 	"keywords": [
 		"privacy"
 	],
+	"main": "build/index.js",
+	"files": [
+		"build/"
+	],
 	"scripts": {
 		"format": "prettier --write .",
 		"lint": "eslint './src/**/*.{js,json,ts}'",
