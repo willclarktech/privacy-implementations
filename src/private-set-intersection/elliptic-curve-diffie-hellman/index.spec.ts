@@ -1,6 +1,6 @@
 import { Client, Server } from "./";
 
-describe("Private set intersection based on Diffie-Hellman", () => {
+describe("Private set intersection based on Elliptic Curve Diffie-Hellman", () => {
 	describe("without filter", () => {
 		it.each([
 			[new Set([]), []],
