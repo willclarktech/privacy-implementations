@@ -18,7 +18,10 @@
 	],
 	"rules": {
 		"curly": ["error", "multi-line", "consistent"],
-		"no-console": ["error", { "allow": ["error", "info", "warn"] }],
+		"no-console": [
+			"error",
+			{ "allow": ["error", "info", "warn", "time", "timeEnd"] }
+		],
 		"no-param-reassign": "error",
 		"no-shadow": "error",
 		"prefer-const": "error",
