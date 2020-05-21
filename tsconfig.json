@@ -2,10 +2,10 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"declaration": true,
-		"declarationDir": "build/types",
+		"declarationDir": "types",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"module": "commonjs",
+		"module": "ESNext",
 		"moduleResolution": "node",
 		"newLine": "LF",
 		"noEmitOnError": true,
@@ -16,11 +16,11 @@
 		"outDir": "build",
 		"pretty": true,
 		"removeComments": true,
-		"resolveJsonModule": true,
 		"rootDir": "src",
 		"sourceMap": true,
 		"strict": true,
 		"target": "es2020"
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*"],
+	"exclude": ["src/**/*.spec.ts"]
 }
