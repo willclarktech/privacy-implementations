@@ -16,17 +16,24 @@
 	"keywords": [
 		"privacy"
 	],
-	"main": "build/index.js",
+	"main": "dist/index.js",
 	"files": [
-		"build/"
+		"dist/"
 	],
 	"scripts": {
 		"format": "prettier --write .",
 		"lint": "eslint './src/**/*.{js,json,ts}'",
-		"build": "tsc",
+		"prebuild:ts": "rm -r build",
+		"build:ts": "tsc",
+		"prebuild:js": "rm -r dist",
+		"build:js": "rollup -c",
+		"build": "npm run build:ts && npm run build:js",
 		"test": "jest"
 	},
 	"devDependencies": {
+		"@rollup/plugin-commonjs": "^12.0.0",
+		"@rollup/plugin-json": "^4.0.3",
+		"@rollup/plugin-node-resolve": "^8.0.0",
 		"@types/bn.js": "^4.11.6",
 		"@types/elliptic": "^6.4.12",
 		"@types/jest": "^25.2.1",
@@ -43,6 +50,7 @@
 		"jest": "^25.3.0",
 		"prettier": "^2.0.4",
 		"rollup": "^2.10.5",
+		"rollup-plugin-terser": "^5.3.0",
 		"ts-jest": "^25.3.1",
 		"typescript": "^3.8.3"
 	},

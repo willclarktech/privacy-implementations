@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const { randBetween } = require("bigint-crypto-utils");
-const { Client, Server } = require("../build/private-set-intersection");
+const { Client, Server } = require("../dist");
 
 const domainSize = 100000000n;
 const numServerElements = 10000;
