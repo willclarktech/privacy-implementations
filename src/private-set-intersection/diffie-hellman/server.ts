@@ -50,7 +50,7 @@ export class Server extends Shared {
 		return {
 			// NOTE: Sorting is a secure shuffle because the encrypted values
 			// are indistinguishable from random without the server’s secret
-			clientEncryptedValues: Array.from(clientEncryptedValues).sort(),
+			clientEncryptedValues: (clientEncryptedValues as bigint[]).sort(),
 			serverIntermediateValues,
 		};
 	}

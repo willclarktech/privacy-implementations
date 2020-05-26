@@ -52,7 +52,7 @@ export class Shared {
 	}
 
 	public prepareIntermediateSortedValues(): readonly bigint[] {
-		const intermediateValues = this.prepareIntermediateValues();
-		return Array.from(intermediateValues).sort();
+		const intermediateValues = this.prepareIntermediateValues() as bigint[];
+		return intermediateValues.sort();
 	}
 }
