@@ -27,6 +27,6 @@ export class Shared {
 
 	public prepareIntermediateSortedValues(): readonly bigint[] {
 		const intermediateValues = this.prepareIntermediateValues();
-		return Array.from(intermediateValues).sort();
+		return (intermediateValues as bigint[]).sort();
 	}
 }
