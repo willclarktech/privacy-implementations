@@ -23,9 +23,9 @@
 	"scripts": {
 		"format": "prettier --write .",
 		"lint": "eslint './src/**/*.{js,json,ts}'",
-		"prebuild:ts": "rm -r build",
+		"prebuild:ts": "rm -rf build",
 		"build:ts": "tsc",
-		"prebuild:js": "rm -r dist",
+		"prebuild:js": "rm -rf dist",
 		"build:js": "rollup -c",
 		"build": "npm run build:ts && npm run build:js",
 		"test": "jest"
