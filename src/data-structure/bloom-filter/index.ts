@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 
+import { buffer2BigInt } from "../../util";
 import { BitArray } from "../bit-array";
 
 export class BloomFilter {
@@ -70,7 +71,7 @@ export class BloomFilter {
 		hash.update(Buffer.from([nonce]));
 		hash.update(element);
 		// Non-uniformity is negligible for filters of reasonable size
-		return Number(hash.digest().readBigUInt64BE() % BigInt(this.bitLength));
+		return Number(buffer2BigInt(hash.digest()) % BigInt(this.bitLength));
 	}
 
 	private getHashes(element: Buffer): readonly number[] {
