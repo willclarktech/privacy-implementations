@@ -6,7 +6,8 @@ const domainSize = 100000000n;
 const numServerElements = 10000;
 const numClientElements = 100;
 const falsePositiveRate = 0.000001;
-const numIterations = 1;
+const numIterationsFromEnv = parseInt(process.env.ITERATIONS, 10);
+const numIterations = isNaN(numIterationsFromEnv) ? 1 : numIterationsFromEnv;
 
 const generateSet = (length) =>
 	Array.from({ length }, () => randBetween(domainSize));
