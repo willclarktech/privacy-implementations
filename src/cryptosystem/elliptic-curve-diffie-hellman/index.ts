@@ -4,7 +4,13 @@ import { curve, ec as EllipticCurve } from "elliptic";
 
 import { array2BigInt, bigInt2Array, bigInt2Buffer } from "../../util";
 
-export type PartyOptions = {};
+export type PartyOptions = {
+	readonly curveName?: string;
+};
+
+const defaultOptions = {
+	curveName: "p256",
+};
 
 export class Party {
 	private readonly ec: EllipticCurve;
@@ -12,8 +18,9 @@ export class Party {
 	private readonly privateKey: BN;
 	private readonly privateKeyInverse: BN;
 
-	constructor(_options: PartyOptions = {}) {
-		this.ec = new EllipticCurve("p256");
+	constructor(options: PartyOptions = {}) {
+		const { curveName } = { ...defaultOptions, ...options };
+		this.ec = new EllipticCurve(curveName);
 		this.curve = this.ec.curve as curve.short;
 		const keyPair = this.ec.genKeyPair();
 		this.privateKey = keyPair.getPrivate();
