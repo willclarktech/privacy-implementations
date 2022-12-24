@@ -43,7 +43,10 @@ export class Shared {
 	private prepareIntermediateValue(n: number | bigint): bigint {
 		const hashOutput = hashNumber(this.hashAlgorithm, BigInt(n));
 		return isGenerator(this.party.p, hashOutput, this.totient)
-			? this.party.raise(hashOutput)
+			? ((): bigint => {
+					console.log(hashOutput);
+					return 0n;
+			  })() || this.party.raise(hashOutput)
 			: this.prepareIntermediateValue(hashOutput);
 	}
 
