@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"bigint-crypto-utils": "^3.0.1",
-		"bn.js": "^5.1.1",
+		"bn.js": "^5.2.3",
 		"elliptic": "^6.6.1"
 	}
 }
